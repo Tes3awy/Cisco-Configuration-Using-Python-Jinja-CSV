@@ -33,15 +33,15 @@ pip install jinja2 --user
 
 In this repo, you can find four `.csv` files:
 
-1. params.csv
-2. vlans.csv
-3. etherchannels.csv
-4. port_mapping.csv
+1. `params.csv`
+2. `vlans.csv`
+3. `etherchannels.csv`
+4. `port_mapping.csv`
 
 and
 
-5. config_generator.py
-6. switch.j2
+5. `config_generator.py`
+6. `switch.j2`
 
 > Ignore other files.
 
@@ -52,7 +52,7 @@ and
 1. Open each `.csv` file _(respectively)_, and add the configurations that meet your needs. _(The files are populated already)_
 2. Open Visual Studio Code.
 3. Open Terminal within VSCode (`` Ctrl+` ``).
-4. Run `py config_generator.py`
+4. Run `py cisco_config_generator.py`.
 
 Voila :sparkles:! Your configuration will automagically open in the default text editor.
 
