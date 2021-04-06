@@ -1,5 +1,7 @@
 # Generate Cisco Configuration Template Using Python, Jinja2, and CSV
 
+The program is designed to generate a configuration template for Cisco Catalyst switches.
+
 ## Table of Contents
 
 1. [Requirements](#1-requirements)
