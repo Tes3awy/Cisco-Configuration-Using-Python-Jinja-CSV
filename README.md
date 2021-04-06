@@ -2,9 +2,9 @@
 
 ## Table of Contents
 
-1. [Prerequisites](#prerequisites)
-2. [Getting Started](#getting-started)
-3. [How it Works?](#how-it-works)
+1. [Prerequisites](#1-prerequisites)
+2. [Getting Started](#2-getting-started)
+3. [How it Works?](#3-how-it-works)
 
 ### 1. Prerequisites
 
@@ -37,7 +37,7 @@ and
 1. Open each `.csv file` _(respectively)_, and add the configurations that meet your needs.
 2. Open Visual Studio Code.
 3. Open Terminal within VSCode (`` Ctrl+` ``).
-4. Run `python config_generator.py`
+4. Run `py config_generator.py`
 
 Voila :sparkles:! Your configuration will automagically open in your default text editor
 
