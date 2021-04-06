@@ -89,30 +89,33 @@ interface Vlan {{ vlan.id }}
   {% if vlan.desc|length > 0 %}
   description *** {{ vlan.desc }} ***
   {% endif %}
-  {% if vlan.shutdown == 'no' %}
   no shutdown
-  {% endif %}
 exit
 !
 {% endif %}
 {% endfor %}
 {% for portchannel in etherchannels %}
 interface port-channel {{ portchannel.id }}
+  {% if portchannel.type == 'L2' %}
   switchport mode {{ portchannel.mode }}
-  {% if portchannel.native_vlan != '' %}
+  {% endif %}
+  {% if portchannel.type == 'L2' and portchannel.mode == 'access' and portchannel.access_vlan|length > 0 %}
+  switchport access vlan {{ portchannel.access_vlan }}
+  {% endif %}
+  {% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and portchannel.native_vlan|length > 0 %}
   switchport trunk native vlan {{ portchannel.native_vlan }}
   {% endif %}
-  {% if portchannel.allowed_vlans != 'all' %}
+  {% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and portchannel.allowed_vlans != 'all' %}
   switchport trunk allowed vlans {{ portchannel.allowed_vlans }}
+  {% endif %}
+  {% if portchannel.type == 'L3' %}
+  no switchport
+  ip address {{ portchannel.ip_addr }} {{ portchannel.mask }}
   {% endif %}
   {% if portchannel.desc|length > 0 %}
   description *** {{ portchannel.desc }} ***
   {% endif %}
-  {% if portchannel.shutdown == 'no' %}
   no shutdown
-  {% else %}
-  shutdown
-  {% endif %}
 exit
 !
 {% endfor %}
@@ -126,14 +129,16 @@ interface {{ port.name }}
 {% endif %}
 {% if port.mode == 'access' %}
   switchport mode access
+  {% if port.access_vlan|length > 0 %}
   switchport access vlan {{ port.access_vlan }}
+  {% endif %}
   {% if port.voice_vlan|length > 0 %}
   switchport voice vlan {{ port.voice_vlan }}
+  {% endif %}
 {% endif %}
 {% if port.mode == 'access' and port.portsecurity != 'no' %}
   switchport port-security
   switchport port-security mac-address sticky
-{% endif %}
 {% endif %}
 {% if port.mode == 'trunk' %}
   switchport mode trunk
@@ -141,7 +146,7 @@ interface {{ port.name }}
 {% if port.mode == 'trunk' and port.native_vlan != '' %}
   switchport trunk native vlan {{ port.native_vlan }}
 {% endif %}
-{% if (port.mode == 'trunk' and (port.allowed_vlans != 'all' or port.allowed_vlans == '')) %}
+{% if (port.mode == 'trunk' and (port.allowed_vlans != 'all' or port.allowed_vlans|length > 0)) %}
   switchport trunk allowed vlans {{ port.allowed_vlans }}
 {% endif %}
 {% if port.portfast == 'yes' %}
