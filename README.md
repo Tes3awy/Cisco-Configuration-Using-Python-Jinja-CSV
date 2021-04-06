@@ -2,10 +2,10 @@
 
 ## Table of Contents
 
-1. [Prerequisites](#1-prerequisites)
+1. [Requirements](#1-requirements)
 2. [How to Install Python Libraries?](#2-how-to-install-python-libraries)
 3. [Getting Started](#3-getting-started)
-4. [How it Works?](#4-how-it-works)
+4. [Usage](#4-usage)
 5. [Preview](#5-preview)
 
 ### 1. Requirements
@@ -27,7 +27,7 @@ pip install jinja2 --user
 
 ---
 
-### 2. Getting Started
+### 3. Getting Started
 
 In this repo, you can find four `.csv` files:
 
@@ -45,19 +45,21 @@ and
 
 ---
 
-### 3. How it Works?
+### 4. Usage
 
 1. Open each `.csv` file _(respectively)_, and add the configurations that meet your needs. _(The files are populated already)_
 2. Open Visual Studio Code.
 3. Open Terminal within VSCode (`` Ctrl+` ``).
 4. Run `py config_generator.py`
 
-Voila :sparkles:! Your configuration will automagically open in your default text editor.
+Voila :sparkles:! Your configuration will automagically open in default text editor.
+
+All generated configuration files are stored in `configs` directory.
 
 > If the `.ios` file extension is not associated with any text editor on your machine, please associate it with VSCode.
 
 ---
 
-### 4. Preview
+### 5. Preview
 
 ![Preview](preview.png)
