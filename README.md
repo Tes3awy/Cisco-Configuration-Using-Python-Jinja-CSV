@@ -3,17 +3,27 @@
 ## Table of Contents
 
 1. [Prerequisites](#1-prerequisites)
-2. [Getting Started](#2-getting-started)
-3. [How it Works?](#3-how-it-works)
-4. [Preview](#4-preview)
+2. [How to Install Python Libraries?](#2-how-to-install-python-libraries)
+3. [Getting Started](#3-getting-started)
+4. [How it Works?](#4-how-it-works)
+5. [Preview](#5-preview)
 
-### 1. Prerequisites
+### 1. Requirements
 
 1. [Python @3.9.4](https://www.python.org/)
 2. [Jinja2 @2.11.3](https://jinja.palletsprojects.com/en/2.11.x/)
-3. [CSV @1.0](https://docs.python.org/3/library/csv.html)
-4. [Visual Studio Code](https://code.visualstudio.com/) (Optional but recommended)
-5. [Cisco IOS Syntax](https://marketplace.visualstudio.com/items?itemName=jamiewoodio.cisco) (Extension for Cisco IOS Syntax Highlighting)
+3. [Visual Studio Code](https://code.visualstudio.com/) (Optional but recommended)
+4. [Cisco IOS Syntax](https://marketplace.visualstudio.com/items?itemName=jamiewoodio.cisco) (Extension for Cisco IOS Syntax Highlighting)
+
+---
+
+### 2. How to install Python Libraries?
+
+#### Jinja2
+
+```python3
+pip install jinja2 --user
+```
 
 ---
 
@@ -28,8 +38,10 @@ In this repo, you can find four `.csv` files:
 
 and
 
-1. config_generator.py
-2. switch.j2
+5. config_generator.py
+6. switch.j2
+
+> Ignore other files.
 
 ---
 

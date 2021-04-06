@@ -13,7 +13,7 @@ from os import path, mkdir, stat
 from csv import DictReader
 from jinja2 import Environment, FileSystemLoader
 import json
-import webbrowser
+import webbrowser as TextEditor
 from time import sleep
 
 # Global Vars
@@ -80,4 +80,4 @@ print("Configuration file '%s' is created successfully!" % (file_name + file_ext
 
 # Open file in default Text Editor for the file extension
 sleep(1)
-webbrowser.open(file_location)
+TextEditor.open(file_location)
