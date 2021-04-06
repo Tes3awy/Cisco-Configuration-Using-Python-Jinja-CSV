@@ -1,0 +1,2 @@
+hostname,timezone,domain_name,stp_mode,vtp_domain,vtp_version,vtp_mode,logging_console,logging_buffer_size,http_server,errdisable,errdisable_recovery_interval,lldp,username,algorithm_type,password,enable_password,ssh_key_size,ssh_version,vty_lines,login_local,timeout,transport_input,transport_output
+Edge-1,EET +2,Cisco,rapid-pvst,Cisco,3,transparent,debugging,307200,no,yes,60,yes,cisco,scrypt,cisco,cisco,2048,2,0 4,yes,15 0,ssh,all
