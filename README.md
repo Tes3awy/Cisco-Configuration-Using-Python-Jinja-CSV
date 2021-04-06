@@ -5,6 +5,7 @@
 1. [Prerequisites](#1-prerequisites)
 2. [Getting Started](#2-getting-started)
 3. [How it Works?](#3-how-it-works)
+4. [Preview](#4-preview)
 
 ### 1. Prerequisites
 
@@ -34,11 +35,17 @@ and
 
 ### 3. How it Works?
 
-1. Open each `.csv file` _(respectively)_, and add the configurations that meet your needs.
+1. Open each `.csv` file _(respectively)_, and add the configurations that meet your needs. _(The files are populated already)_
 2. Open Visual Studio Code.
 3. Open Terminal within VSCode (`` Ctrl+` ``).
 4. Run `py config_generator.py`
 
-Voila :sparkles:! Your configuration will automagically open in your default text editor
+Voila :sparkles:! Your configuration will automagically open in your default text editor.
 
 > If the `.ios` file extension is not associated with any text editor on your machine, please associate it with VSCode.
+
+---
+
+### 4. Preview
+
+![Preview](preview.png)
