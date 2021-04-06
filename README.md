@@ -54,7 +54,7 @@ and
 3. Open Terminal within VSCode (`` Ctrl+` ``).
 4. Run `py config_generator.py`
 
-Voila :sparkles:! Your configuration will automagically open in default text editor.
+Voila :sparkles:! Your configuration will automagically open in the default text editor.
 
 All generated configuration files are stored in `configs` directory.
 
