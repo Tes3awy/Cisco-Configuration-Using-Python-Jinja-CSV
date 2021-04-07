@@ -47,7 +47,7 @@ In the `CSV` directory, you can find four `.csv` files:
 
 Voila :sparkles:! Your configuration will automagically open in the default text editor.
 
-All generated configuration files are stored in the `configs` directory.
+**All generated configuration files are stored in the `configs` directory.**
 
 > If the `.ios` file extension is not associated with any text editor on your machine, please associate it with VSCode.
 
