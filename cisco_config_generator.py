@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-# -----------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------
 #
-# Demonstrates how to generate Cisco configuration using Python, Jinja2 and CSV
+# Demonstrates how to generate Cisco configuration template using Python, Jinja2 and CSV
 #
 # (C) 2021 Osama Abbas, Cairo, Egypt
 # Released under MIT License
@@ -10,10 +10,10 @@
 # Filename: cisco_config_generator.py
 # Version: Python 3.9.4
 # Authors: Osama Abbas (oabbas2512@gmail.com)
-# Description:   The program is designed to generate a configuration template
+# Description:   This program is designed to generate a configuration template
 #                for Cisco Catalyst switches.
 #
-# -----------------------------------------------------------------------------
+# --------------------------------------------------------------------------------------
 
 # Libraries
 from os import path, mkdir, stat

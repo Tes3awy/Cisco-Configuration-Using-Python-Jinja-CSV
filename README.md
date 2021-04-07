@@ -1,6 +1,8 @@
 # Generate Cisco Configuration Template Using Python, Jinja2, and CSV
 
-The program is designed to generate a configuration template for Cisco Catalyst switches.
+This program is designed to generate a configuration template for Cisco Catalyst switches.
+
+---
 
 ## Table of Contents
 
@@ -21,10 +23,8 @@ The program is designed to generate a configuration template for Cisco Catalyst 
 
 ### 2. How to install Python Libraries?
 
-#### Jinja2
-
 ```python3
-pip install jinja2 --user
+pip install -r requirements.txt
 ```
 
 ---
@@ -52,7 +52,7 @@ and
 1. Open each `.csv` file _(respectively)_, and add the configurations that meet your needs. _(The files are populated already)_
 2. Open Visual Studio Code.
 3. Open Terminal within VSCode (`` Ctrl+` ``).
-4. Run `py cisco_config_generator.py`.
+4. Run `python cisco_config_generator.py`.
 
 Voila :sparkles:! Your configuration will automagically open in the default text editor.
 
