@@ -24,12 +24,12 @@ import webbrowser as TextEditor
 from time import sleep
 
 # Global Vars
-jinja_template = "switch.j2"
 output_dir = "configs"
-params_file = "params.csv"
-vlans_file = "vlans.csv"
-etherchannels_file = "etherchannels.csv"
-port_mapping = "port_mapping.csv"
+jinja_template = "switch.j2"
+params_file = "CSV/01. params.csv"
+vlans_file = "CSV/02. vlans.csv"
+etherchannels_file = "CSV/03. etherchannels.csv"
+port_mapping = "CSV/04. port_mapping.csv"
 
 # Handle Jinja template
 env = Environment(loader=FileSystemLoader("./"), trim_blocks=True, lstrip_blocks=True)
