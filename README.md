@@ -1,16 +1,18 @@
 # Generate Cisco Configuration Template Using Python, Jinja2, and CSV
 
-This program is designed to generate a configuration template for Cisco Catalyst switches.
+This program is designed to generate a configuration template for Cisco Catalyst/Nexus switches.
 
 ## Table of Contents
 
 1. [Requirements](#1-requirements)
-2. [How to Install Python Packages?](#2-how-to-install-python-packages)
+2. [How to Install Python Libraries?](#2-how-to-install-python-libraries)
 3. [Getting Started](#3-getting-started)
 4. [Usage](#4-usage)
 5. [Preview](#5-preview)
 6. [Helpful Tips](#6-helpful-tips)
 7. [TODOs](#7-todos)
+
+---
 
 ### 1. Requirements
 
@@ -21,7 +23,7 @@ This program is designed to generate a configuration template for Cisco Catalyst
 
 ---
 
-### 2. How to install Python Packages?
+### 2. How to install Python Libraries?
 
 ```python3
 pip install -r requirements.txt
@@ -65,10 +67,10 @@ Voila :sparkles:! Your configuration will automagically open in the default text
 
 1. Validate the generated configuration template before pasting it on your device.
 2. **DO NOT** copy/paste the whole configuration all at once on your device. Divide the configuration template into sections.
-3. Always save your configuration with `copy running-config startup-config` command. [Why?](https://networkengineering.stackexchange.com/questions/52309/diffrence-between-wr-and-copy-running-config-to-startup-config#answer-52310)
+3. Always save your configuration with `copy running-config startup-config` command. [Why?!](https://networkengineering.stackexchange.com/questions/52309/diffrence-between-wr-and-copy-running-config-to-startup-config#answer-52310)
 
 ---
 
 ### 7. TODOs
 
-- [ ] Validate input in CSV files.
+- [ ] Validate input fields in CSV files.
