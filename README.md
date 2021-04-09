@@ -33,12 +33,26 @@ pip install -r requirements.txt
 
 ### 3. Getting Started
 
-In the `CSV` directory, you can find four `.csv` files:
-
-1. `01. params.csv`
-2. `02. vlans.csv`
-3. `03. etherchannels.csv`
-4. `04. port_mapping.csv`
+```bash
+│   cisco_config_generator.py
+│   switch.j2
+│   requirements.txt
+│   .gitignore
+│   README.md
+│   LICENSE
+│
+├───assets
+│       preview.png
+│
+├───configs
+│       .gitkeep
+│
+└───CSV
+        01. params.csv
+        02. vlans.csv
+        03. etherchannels.csv
+        04. port_mapping.csv
+```
 
 ---
 
