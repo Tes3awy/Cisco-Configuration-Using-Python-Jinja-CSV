@@ -7,7 +7,9 @@ clock timezone {{ timezone }}
 hostname {{ hostname }}
 !
 no ip domain lookup
+{% if domain_name|length > 0 %}
 ip domain name {{ domain_name }}.local
+{% endif %}
 !
 {% if vtp_domain|length > 0 %}
 vtp domain {{ vtp_domain }}
@@ -174,8 +176,12 @@ line vty {{ vty_lines }}
   login local
   {% endif %}
   exec-timeout {{ timeout }}
+  {% if transport_input|length > 0 %}
   transport input {{ transport_input }}
+  {% endif %}
+  {% if transport_output|length > 0 %}
   transport output {{ transport_output }}
+  {% endif %}
 exit
 !
 end
