@@ -5,8 +5,8 @@ This program is designed to generate a configuration template for Cisco Catalyst
 ## Table of Contents
 
 1. [Requirements](#1-requirements)
-2. [Installation](#2-installation)
-3. [Getting Started](#3-getting-started)
+2. [Getting Started](#2-getting-started)
+3. [Installation](#3-installation)
 4. [Usage](#4-usage)
 5. [Preview](#5-preview)
 6. [Helpful Tips](#6-helpful-tips)
@@ -23,15 +23,7 @@ This program is designed to generate a configuration template for Cisco Catalyst
 
 ---
 
-### 2. Installation
-
-```python3
-pip install -r requirements.txt
-```
-
----
-
-### 3. Getting Started
+### 2. Getting Started
 
 ```bash
 │   cisco_config_generator.py
@@ -52,6 +44,14 @@ pip install -r requirements.txt
         02. vlans.csv
         03. etherchannels.csv
         04. port_mapping.csv
+```
+
+---
+
+### 3. Installation
+
+```python3
+pip install -r requirements.txt
 ```
 
 ---
