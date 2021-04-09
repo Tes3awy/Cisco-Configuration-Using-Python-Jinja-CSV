@@ -9,6 +9,8 @@ This program is designed to generate a configuration template for Cisco Catalyst
 3. [Getting Started](#3-getting-started)
 4. [Usage](#4-usage)
 5. [Preview](#5-preview)
+6. [Helpful Tips](#6-helpful-tips)
+7. [TODOs](#7-todos)
 
 ### 1. Requirements
 
@@ -56,3 +58,17 @@ Voila :sparkles:! Your configuration will automagically open in the default text
 ### 5. Preview
 
 ![Preview](assets/preview.png)
+
+---
+
+### 6. Helpful Tips
+
+1. Validate the generated configuration template before pasting it on your device.
+2. **DO NOT** copy/paste the whole configuration all at once on your device. Divide the configuration template into sections.
+3. Always save your configuration with `copy running-config startup-config` command. [Why?](https://networkengineering.stackexchange.com/questions/52309/diffrence-between-wr-and-copy-running-config-to-startup-config#answer-52310)
+
+---
+
+### 7. TODOs
+
+- [ ] Validate input in CSV files.
