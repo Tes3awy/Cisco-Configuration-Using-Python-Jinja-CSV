@@ -5,7 +5,7 @@ This program is designed to generate a configuration template for Cisco Catalyst
 ## Table of Contents
 
 1. [Requirements](#1-requirements)
-2. [How to Install Python Libraries?](#2-how-to-install-python-libraries)
+2. [Installation](#2-installation)
 3. [Getting Started](#3-getting-started)
 4. [Usage](#4-usage)
 5. [Preview](#5-preview)
@@ -23,7 +23,7 @@ This program is designed to generate a configuration template for Cisco Catalyst
 
 ---
 
-### 2. How to install Python Libraries?
+### 2. Installation
 
 ```python3
 pip install -r requirements.txt
