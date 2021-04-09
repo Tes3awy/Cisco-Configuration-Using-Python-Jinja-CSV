@@ -29,8 +29,8 @@ This program is designed to generate a configuration template for Cisco Catalyst
 │   cisco_config_generator.py
 │   switch.j2
 │   requirements.txt
-│   .gitignore
 │   README.md
+│   .gitignore
 │   LICENSE
 │
 ├───assets
