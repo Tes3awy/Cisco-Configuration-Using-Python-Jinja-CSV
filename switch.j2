@@ -107,7 +107,7 @@ interface port-channel {{ portchannel.id }}
   {% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and portchannel.native_vlan|length > 0 %}
   switchport trunk native vlan {{ portchannel.native_vlan }}
   {% endif %}
-  {% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and portchannel.allowed_vlans != 'all' %}
+  {% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and (portchannel.allowed_vlans != 'all' and portchannel.allowed_vlans|length > 0) %}
   switchport trunk allowed vlans {{ portchannel.allowed_vlans }}
   {% endif %}
   {% if portchannel.type == 'L3' %}
