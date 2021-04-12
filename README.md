@@ -52,7 +52,11 @@ This program is designed to generate a configuration template for Cisco Catalyst
 
 ### 3. Installation
 
-```python3
+```bash
+git clone https://github.com/Tes3awy/Cisco-Configuration-Using-Python-Jinja-CSV.git
+
+cd Cisco-Configuration-Using-Python-Jinja-CSV
+
 pip install -r requirements.txt
 ```
 
