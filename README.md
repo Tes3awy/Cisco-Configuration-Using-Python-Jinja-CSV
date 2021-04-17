@@ -21,9 +21,7 @@ This program is designed to generate a configuration template for Cisco Catalyst
 1. [Python @3.9.4](https://www.python.org/)
 2. [Jinja2 @2.11.3](https://jinja.palletsprojects.com/en/2.11.x/)
 3. [Visual Studio Code](https://code.visualstudio.com/) (Optional but strongly recommended)
-4. [Cisco IOS Syntax](https://marketplace.visualstudio.com/items?itemName=jamiewoodio.cisco) (Extension for Cisco IOS Syntax Highlighting)
-
----
+4. [Cisco IOS Syntax](https://marketplace.visualstudio.com/items?itemName=jamiewoodio.cisco) (Optional. Extension for Cisco IOS Syntax Highlighting)
 
 ### 2. Getting Started
 
@@ -48,47 +46,37 @@ This program is designed to generate a configuration template for Cisco Catalyst
         04. port_mapping.csv
 ```
 
----
-
 ### 3. Installation
 
-`git clone https://github.com/Tes3awy/Cisco-Configuration-Using-Python-Jinja-CSV.git`
-
-`cd Cisco-Configuration-Using-Python-Jinja-CSV`
-
-`pip install -r requirements.txt`
-
----
+```bash
+$ git clone https://github.com/Tes3awy/Cisco-Configuration-Using-Python-Jinja-CSV.git
+$ cd Cisco-Configuration-Using-Python-Jinja-CSV
+$ pip install -r requirements.txt
+```
 
 ### 4. Usage
 
-1. Open each `.csv` file _respectively_, and add the configurations that meet your needs. _(The csv files are populated with a sample configuration already)_
+1. Open each `.csv` file _respectively_ and add the configurations that meet your needs. _(The CSV files are populated with a sample configuration already)_
 2. Open Visual Studio Code.
 3. Open the Terminal within VSCode (`` Ctrl+` ``).
 4. Run `python cisco_config_generator.py`.
 
 Voila :sparkles:! Your configuration will automagically open in the default text editor.
 
-**All generated configuration files are stored in the `configs` directory.**
+> **All generated configuration templates are stored in the `configs` directory.**
 
 > If the `.ios` file extension is not associated with any text editor on your machine, please associate it with VSCode.
-
----
 
 ### 5. Preview
 
 ![Preview](assets/preview.png)
 
----
-
 ### 6. Helpful Tips
 
 1. Validate the generated configuration template before pasting it on your device.
-2. **DO NOT** copy/paste the whole configuration all at once on your device. Divide the configuration template into sections.
-3. Always save your configuration with `copy running-config startup-config` command. [Why?!](https://networkengineering.stackexchange.com/questions/52309/diffrence-between-wr-and-copy-running-config-to-startup-config#answer-52310)
-
----
+2. **DO NOT** copy/paste the whole configuration all at once on your device. Divide the configuration template into multiple sections.
+3. Always save your configuration with the `copy running-config startup-config` command. [Why?!](https://networkengineering.stackexchange.com/questions/52309/diffrence-between-wr-and-copy-running-config-to-startup-config#answer-52310)
 
 ### 7. TODOs
 
-- [ ] Validate input fields in CSV files.
+- [ ] Validate input fields in CSV.
