@@ -18,9 +18,9 @@
   "enable_password": "cisco",
   "ssh_key_size": "2048",
   "ssh_version": "2",
-  "vty_lines": "0 4",
+  "vty_lines": "4",
   "login_local": "yes",
-  "timeout": "15 0",
+  "timeout": "15",
   "transport_input": "ssh",
   "transport_output": "all",
   "vlans": [
