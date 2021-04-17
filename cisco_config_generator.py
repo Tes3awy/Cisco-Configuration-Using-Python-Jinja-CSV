@@ -17,10 +17,14 @@
 
 # Libraries
 from os import path, mkdir
+import json
 from csv import DictReader
 from jinja2 import Environment, FileSystemLoader
 import webbrowser as TextEditor
 from time import sleep
+from datetime import datetime, date
+
+from cisco_validation import validate_cisco_config
 
 # Global Vars
 OUTPUT_DIR = "configs"
@@ -30,6 +34,7 @@ PARAMS_FILE = path.join(CSV_DIR, "01. params.csv")
 VLANS_FILE = path.join(CSV_DIR, "02. vlans.csv")
 ETHERCHANNELS_FILE = path.join(CSV_DIR, "03. etherchannels.csv")
 PORT_MAPPING = path.join(CSV_DIR, "04. port_mapping.csv")
+TODAY = str(date.today())
 
 
 def build_template(
@@ -41,6 +46,7 @@ def build_template(
         loader=FileSystemLoader("./"), trim_blocks=True, lstrip_blocks=True
     )
     template = env.get_template(JINJA_TEMPLATE)
+    template.globals["now"] = datetime.now
 
     # Create configs directory if not already created
     if not path.exists(OUTPUT_DIR):
@@ -81,21 +87,30 @@ def build_template(
     # All dictionaries
     dicts = dict_params
 
-    # Generate the configuration template file
-    res = template.render(dicts)
-    file_name = dicts["hostname"]
-    file_ext = ".ios"
-    file_location = path.join(OUTPUT_DIR, file_name + file_ext)
-    f = open(file_location, "w")
-    f.write(res)
-    f.close()
+    # Create a json file for validation
+    with open("json_schema.json", "w") as outfile:
+        json.dump(dicts, outfile, indent=2)
+        print("✔ Generated 'json_schema.json' for validation.")
+    # Validate Cisco Configuration
+    try:
+        validate_cisco_config() is True
+        # Generate the configuration template file
+        res = template.render(dicts)
+        file_name = f"{dicts['hostname'] + '-' + TODAY}"
+        file_ext = ".ios"
+        file_location = path.join(OUTPUT_DIR, file_name + file_ext)
+        with open(file_location, "w") as config_file:
+            config_file.write(res)
 
-    print(f"✔ Configuration file '{file_name + file_ext}' is created successfully!")
-    # Open configuration file in the default Text Editor for the .ios file extension
-    sleep(1)
-    TextEditor.open_new_tab(file_location)
-    print(f"Opening '{file_name + file_ext}', please wait...")
-    return True
+        print("✔ Perfect! Your Cisco configuration is valid.")
+        print(f"✔ Configuration file '{file_name + file_ext}' is created successfully!")
+        # Open generated configuration file in the default Text Editor for the .ios file extension
+        print(f"Opening '{file_name + file_ext}', please wait...")
+        sleep(1)
+        TextEditor.open_new_tab(file_location)
+    except:
+        print("Oops! Something went wrong. Please check the following errors.")
+        print(f"✖ Errors: {validate_cisco_config()}")
 
 
 if __name__ == "__main__":
