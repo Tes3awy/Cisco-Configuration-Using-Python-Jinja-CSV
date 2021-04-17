@@ -1,6 +1,6 @@
 [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/Tes3awy/Cisco-Configuration-Using-Python-Jinja-CSV)
 
-# Generate Cisco Configuration Template Using Python, Jinja2, and CSV
+# Generate Cisco Configuration Template Using Python3, Jinja2, and CSV
 
 This program is designed to generate a configuration template for Cisco Catalyst/Nexus switches.
 
@@ -79,4 +79,4 @@ Voila :sparkles:! Your configuration will automagically open in the default text
 
 ### 7. TODOs
 
-- [ ] Validate input fields in CSV.
+- [x] Validate input fields in CSV.
