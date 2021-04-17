@@ -16,7 +16,7 @@
 # --------------------------------------------------------------------------------------
 
 # Libraries
-from os import path, mkdir, stat
+from os import path, mkdir
 from csv import DictReader
 from jinja2 import Environment, FileSystemLoader
 import webbrowser as TextEditor
@@ -24,11 +24,12 @@ from time import sleep
 
 # Global Vars
 OUTPUT_DIR = "configs"
+CSV_DIR = "CSV"
 JINJA_TEMPLATE = "switch.j2"
-PARAMS_FILE = "CSV/01. params.csv"
-VLANS_FILE = "CSV/02. vlans.csv"
-ETHERCHANNELS_FILE = "CSV/03. etherchannels.csv"
-PORT_MAPPING = "CSV/04. port_mapping.csv"
+PARAMS_FILE = path.join(CSV_DIR, "01. params.csv")
+VLANS_FILE = path.join(CSV_DIR, "02. vlans.csv")
+ETHERCHANNELS_FILE = path.join(CSV_DIR, "03. etherchannels.csv")
+PORT_MAPPING = path.join(CSV_DIR, "04. port_mapping.csv")
 
 
 def build_template(
@@ -85,15 +86,15 @@ def build_template(
     file_name = dicts["hostname"]
     file_ext = ".ios"
     file_location = path.join(OUTPUT_DIR, file_name + file_ext)
-    file = open(file_location, "w")
-    file.write(res)
-    file.close()
+    f = open(file_location, "w")
+    f.write(res)
+    f.close()
 
-    print("✔ Configuration file '%s' is created successfully!" % (file_name + file_ext))
-
-    # Open file in default Text Editor for the file extension
+    print(f"✔ Configuration file '{file_name + file_ext}' is created successfully!")
+    # Open configuration file in the default Text Editor for the .ios file extension
     sleep(1)
-    TextEditor.open(file_location)
+    TextEditor.open_new_tab(file_location)
+    print(f"Opening '{file_name + file_ext}', please wait...")
     return True
 
 
