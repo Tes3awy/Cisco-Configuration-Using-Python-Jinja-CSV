@@ -27,7 +27,9 @@ This program is designed to generate a configuration template for Cisco Catalyst
 
 ```bash
 │   cisco_config_generator.py
+│   cisco_validation.py
 │   switch.j2
+│   json_schema.json
 │   requirements.txt
 │   README.md
 │   .gitignore
@@ -44,6 +46,7 @@ This program is designed to generate a configuration template for Cisco Catalyst
         02. vlans.csv
         03. etherchannels.csv
         04. port_mapping.csv
+
 ```
 
 ### 3. Installation
@@ -79,4 +82,4 @@ Voila :sparkles:! Your configuration will automagically open in the default text
 
 ### 7. TODOs
 
-- [ ] Validate input fields in CSV.
+- [x] ~~Validate input fields in CSV~~.

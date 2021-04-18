@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-# --------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
 #
-# Demonstrates how to generate Cisco configuration template using Python, Jinja2 and CSV
+# Demonstrates how to generate Cisco configuration template using Python3, Jinja2 and CSV
 #
 # (C) 2021 Osama Abbas, Cairo, Egypt
 # Released under MIT License
@@ -11,17 +11,20 @@
 # Version: Python 3.9.4
 # Authors: Osama Abbas (oabbas2512@gmail.com)
 # Description:   This program is designed to generate a configuration template
-#                for Cisco Catalyst switches.
+#                for Cisco Catalyst/Nexus switches.
 #
-# --------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------
 
 # Libraries
 from os import path, mkdir
+import json
 from csv import DictReader
 from jinja2 import Environment, FileSystemLoader
 import webbrowser as TextEditor
 from time import sleep
-from datetime import date, datetime
+from datetime import datetime, date
+
+from cisco_validation import validate_cisco_config
 
 # Global Vars
 OUTPUT_DIR = "configs"
@@ -84,19 +87,35 @@ def build_template(
     # All dictionaries
     dicts = dict_params
 
-    # Generate the configuration template file
-    res = template.render(dicts)
-    file_name = f"{dicts['hostname']}_{TODAY}"
-    file_ext = "ios"
-    file_location = path.join(OUTPUT_DIR, f"{file_name}.{file_ext}")
-    with open(file_location, "w") as config_file:
-        config_file.write(res)
+    # Create a json file for validation
+    with open("json_schema.json", "w") as outfile:
+        json.dump(dicts, outfile, indent=2)
+        print("✔ Generated 'json_schema.json' for validation.")
 
-    print(f"✔ Configuration file '{file_name}.{file_ext}' is created successfully!")
-    # Open configuration file in the default Text Editor for the .ios file extension
-    print(f"Opening '{file_name}.{file_ext}', please wait...")
-    sleep(1)
-    TextEditor.open_new_tab(file_location)
+    # Validate Cisco Configuration
+    cisco_validation = validate_cisco_config()
+    if cisco_validation[0]:
+        print("✔ Perfect! Your configuration is a valid Cisco configuration.")
+        # Generate the configuration template file
+        res = template.render(dicts)
+        file_name = f"{dicts['hostname']}_{TODAY}"
+        file_ext = "ios"
+        file_location = path.join(OUTPUT_DIR, f"{file_name}.{file_ext}")
+        with open(file_location, "w") as config_file:
+            config_file.write(res)
+
+        print(
+            f"✔ Configuration file '{file_name}.{file_ext}' is created successfully!\n"
+        )
+        # Open configuration file in the default Text Editor for the .ios file extension
+        print(f"Opening '{file_name}.{file_ext}', please wait...")
+        sleep(1)
+        TextEditor.open_new_tab(file_location)
+    else:
+        print("✖ Oops! Something went wrong. Please check the following errors.")
+        errors = cisco_validation[1]
+        for key, value in errors.items():
+            print(f"✖ Error(s): {key}: {value}")
 
 
 if __name__ == "__main__":
