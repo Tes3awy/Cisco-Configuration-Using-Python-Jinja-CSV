@@ -1,6 +1,6 @@
 [![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/Tes3awy/Cisco-Configuration-Using-Python-Jinja-CSV)
 
-# Generate Cisco Configuration Template Using Python3, Jinja2, and CSV
+# Generate Cisco Configuration Template Using Python3, Jinja2, and CSV with Validation
 
 This program is designed to generate a configuration template for Cisco Catalyst/Nexus switches.
 
@@ -29,7 +29,6 @@ This program is designed to generate a configuration template for Cisco Catalyst
 │   cisco_config_generator.py
 │   cisco_validation.py
 │   switch.j2
-│   json_schema.json
 │   requirements.txt
 │   README.md
 │   .gitignore
@@ -64,7 +63,9 @@ $ pip install -r requirements.txt
 3. Open the Terminal within VSCode (`` Ctrl+` ``).
 4. Run `python cisco_config_generator.py`.
 
-Voila :sparkles:! Your configuration will automagically open in the default text editor.
+First, a `json_schema.json` file is created _(if not created already)_ from your configuration in CSV files. Then, `json_schema.json` is validated against a set of rules in `cisco_validation.py`.
+
+Voila :sparkles:! Your configuration will automatically open in the default text editor.
 
 > **All generated configuration templates are stored in the `configs` directory.**
 
@@ -76,10 +77,9 @@ Voila :sparkles:! Your configuration will automagically open in the default text
 
 ### 6. Helpful Tips
 
-1. Validate the generated configuration template before pasting it on your device.
-2. **DO NOT** copy/paste the whole configuration all at once on your device. Divide the configuration template into multiple sections.
-3. Always save your configuration with the `copy running-config startup-config` command. [Why?!](https://networkengineering.stackexchange.com/questions/52309/diffrence-between-wr-and-copy-running-config-to-startup-config#answer-52310)
+1. **DO NOT** copy/paste the whole configuration all at once on your device. Divide the configuration template into multiple sections.
+2. Always save your configuration with the `copy running-config startup-config` command. [Why?!](https://networkengineering.stackexchange.com/questions/52309/diffrence-between-wr-and-copy-running-config-to-startup-config#answer-52310)
 
 ### 7. TODOs
 
-- [x] ~~Validate input fields in CSV~~.
+- [x] ~~Validate input fields in CSV~~. (Done)
