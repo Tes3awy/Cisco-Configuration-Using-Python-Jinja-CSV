@@ -1,7 +1,7 @@
 {
   "hostname": "Edge-2",
   "timezone": "EET +2",
-  "domain_name": "Cisco",
+  "domain_name": "Cisco.local",
   "stp_mode": "rapid-pvst",
   "vtp_domain": "Cisco",
   "vtp_version": "3",

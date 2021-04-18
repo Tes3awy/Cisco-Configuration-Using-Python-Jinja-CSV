@@ -1,4 +1,4 @@
-! Built on {{ now() }}
+!Built on {{ now() }}
 
 enable
 !
@@ -9,29 +9,29 @@ clock timezone {{ timezone }}
 hostname {{ hostname }}
 !
 no ip domain lookup
-{% if domain_name|length %}
-ip domain name {{ domain_name }}.local
+{% if domain_name|length > 0 %}
+ip domain name {{ domain_name }}
 {% endif %}
 !
-{% if vtp_domain|length %}
+{% if vtp_domain|length > 0 %}
 vtp domain {{ vtp_domain }}
 {% endif %}
-{% if vtp_version|length %}
+{% if vtp_version|length > 0 %}
 vtp version {{ vtp_version }}
 {% endif %}
 vtp mode {{ vtp_mode }}
 !
-{% if logging_console|length %}
+{% if logging_console|length > 0 %}
 logging console {{ logging_console }}
-{% else %}
-logging console informational
 {% endif %}
-{% if logging_buffer_size|length %}
+{% if logging_buffer_size|length > 0 %}
 logging buffered {{ logging_buffer_size }}
-{% endif %}
 !
+{% endif %}
 username {{ username }} privilege 15 algorithm-type {{ algorithm_type }} secret {{ password }}
+{% if enable_password|length > 0 %}
 enable algorithm-type {{ algorithm_type }} secret {{ enable_password }}
+{% endif %}
 !
 spanning-tree mode {{ stp_mode }}
 !
@@ -39,9 +39,13 @@ spanning-tree mode {{ stp_mode }}
 lldp run
 {% endif %}
 !
-{% if ssh_key_size|length %}
+{% if ssh_key_size|length > 0 %}
 crypto key generate rsa general-keys modulus {{ ssh_key_size }}
-ip ssh version {{ ssh_version }}
+{% endif %}
+{% if ssh_key_size >= '2048' and ssh_version == '2' %}
+ip ssh version 2
+{% else %}
+ip ssh version 1.99
 {% endif %}
 !
 {% if http_server == 'no' %}
@@ -87,10 +91,10 @@ vlan {{ vlan.id }}
   name {{ vlan.name }}
 exit
 !
-{% if vlan.ip_addr|length %}
+{% if vlan.ip_addr|length > 0 %}
 interface Vlan {{ vlan.id }}
   ip address {{ vlan.ip_addr }} {{ vlan.mask }}
-  {% if vlan.desc|length %}
+  {% if vlan.desc|length > 0 %}
   description *** {{ vlan.desc }} ***
   {% endif %}
   no shutdown
@@ -103,20 +107,20 @@ interface port-channel {{ portchannel.id }}
   {% if portchannel.type == 'L2' %}
   switchport mode {{ portchannel.mode }}
   {% endif %}
-  {% if portchannel.type == 'L2' and portchannel.mode == 'access' and portchannel.access_vlan|length %}
+  {% if portchannel.type == 'L2' and portchannel.mode == 'access' and portchannel.access_vlan|length > 0 %}
   switchport access vlan {{ portchannel.access_vlan }}
   {% endif %}
-  {% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and portchannel.native_vlan|length %}
+  {% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and portchannel.native_vlan|length > 0 %}
   switchport trunk native vlan {{ portchannel.native_vlan }}
   {% endif %}
-  {% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and (portchannel.allowed_vlans != 'all' and portchannel.allowed_vlans|length) %}
+  {% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and (portchannel.allowed_vlans != 'all' and portchannel.allowed_vlans|length > 0) %}
   switchport trunk allowed vlans {{ portchannel.allowed_vlans }}
   {% endif %}
   {% if portchannel.type == 'L3' %}
   no switchport
   ip address {{ portchannel.ip_addr }} {{ portchannel.mask }}
   {% endif %}
-  {% if portchannel.desc|length %}
+  {% if portchannel.desc|length > 0 %}
   description *** {{ portchannel.desc }} ***
   {% endif %}
   no shutdown
@@ -127,16 +131,16 @@ exit
 interface {{ port.name }}
 {% if port.mode != 'trunk' and port.mode != 'access' %}
   {{ port.mode }}
-  {% if port.desc|length %}
+  {% if port.desc|length > 0 %}
   description *** {{ port.desc }} ***
   {% endif %}
 {% endif %}
 {% if port.mode == 'access' %}
   switchport mode access
-  {% if port.access_vlan|length %}
+  {% if port.access_vlan|length > 0 %}
   switchport access vlan {{ port.access_vlan }}
   {% endif %}
-  {% if port.voice_vlan|length %}
+  {% if port.voice_vlan|length > 0 %}
   switchport voice vlan {{ port.voice_vlan }}
   {% endif %}
 {% endif %}
@@ -150,7 +154,7 @@ interface {{ port.name }}
 {% if port.mode == 'trunk' and port.native_vlan != '' %}
   switchport trunk native vlan {{ port.native_vlan }}
 {% endif %}
-{% if (port.mode == 'trunk' and (port.allowed_vlans != 'all' and port.allowed_vlans|length)) %}
+{% if (port.mode == 'trunk' and (port.allowed_vlans != 'all' and port.allowed_vlans|length > 0)) %}
   switchport trunk allowed vlans {{ port.allowed_vlans }}
 {% endif %}
 {% if port.portfast == 'yes' %}
@@ -159,7 +163,7 @@ interface {{ port.name }}
 {% if port.bpduguard == 'yes' %}
   spanning-tree bpduguard enable
 {% endif %}
-{% if port.description|length %}
+{% if port.description|length > 0 %}
   description *** {{ port.description }} ***
 {% endif %}
 exit
@@ -177,15 +181,15 @@ line vty 0 {{ vty_lines }}
   login local
   {% endif %}
   exec-timeout {{ timeout }} 0
-  {% if transport_input|length %}
+  {% if transport_input|length > 0 %}
   transport input {{ transport_input }}
   {% else %}
   transport input all
   {% endif %}
-  {% if transport_output|length %}
+  {% if transport_output|length > 0 %}
   transport output {{ transport_output }}
   {% else %}
-  transport input all
+  transport output all
   {% endif %}
 exit
 !
