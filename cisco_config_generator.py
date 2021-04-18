@@ -21,6 +21,7 @@ from csv import DictReader
 from jinja2 import Environment, FileSystemLoader
 import webbrowser as TextEditor
 from time import sleep
+from datetime import date, datetime
 
 # Global Vars
 OUTPUT_DIR = "configs"
@@ -30,6 +31,7 @@ PARAMS_FILE = path.join(CSV_DIR, "01. params.csv")
 VLANS_FILE = path.join(CSV_DIR, "02. vlans.csv")
 ETHERCHANNELS_FILE = path.join(CSV_DIR, "03. etherchannels.csv")
 PORT_MAPPING = path.join(CSV_DIR, "04. port_mapping.csv")
+TODAY = str(date.today())
 
 
 def build_template(
@@ -41,6 +43,7 @@ def build_template(
         loader=FileSystemLoader("./"), trim_blocks=True, lstrip_blocks=True
     )
     template = env.get_template(JINJA_TEMPLATE)
+    template.globals["now"] = datetime.now
 
     # Create configs directory if not already created
     if not path.exists(OUTPUT_DIR):
@@ -83,19 +86,17 @@ def build_template(
 
     # Generate the configuration template file
     res = template.render(dicts)
-    file_name = dicts["hostname"]
-    file_ext = ".ios"
-    file_location = path.join(OUTPUT_DIR, file_name + file_ext)
-    f = open(file_location, "w")
-    f.write(res)
-    f.close()
+    file_name = f"{dicts['hostname']}_{TODAY}"
+    file_ext = "ios"
+    file_location = path.join(OUTPUT_DIR, f"{file_name}.{file_ext}")
+    with open(file_location, "w") as config_file:
+        config_file.write(res)
 
-    print(f"✔ Configuration file '{file_name + file_ext}' is created successfully!")
+    print(f"✔ Configuration file '{file_name}.{file_ext}' is created successfully!")
     # Open configuration file in the default Text Editor for the .ios file extension
+    print(f"Opening '{file_name}.{file_ext}', please wait...")
     sleep(1)
     TextEditor.open_new_tab(file_location)
-    print(f"Opening '{file_name + file_ext}', please wait...")
-    return True
 
 
 if __name__ == "__main__":
