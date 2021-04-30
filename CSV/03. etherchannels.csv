@@ -1,4 +1,0 @@
-id,type,mode,access_vlan,native_vlan,allowed_vlans,ip_addr,mask,desc
-1,L2,access,200,,,,,
-2,L2,trunk,,100,"200,300",,,Uplink to Core
-3,L3,,,,,172.16.1.5,255.255.0.0,
