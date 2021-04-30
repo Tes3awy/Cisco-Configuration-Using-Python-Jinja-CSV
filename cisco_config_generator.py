@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # ---------------------------------------------------------------------------------------
 #
@@ -23,6 +23,10 @@ from jinja2 import Environment, FileSystemLoader
 import webbrowser as TextEditor
 from time import sleep
 from datetime import datetime, date
+from colorama import init
+from termcolor import cprint
+
+init(autoreset=True)
 
 from cisco_validation import validate_cisco_config
 
@@ -30,16 +34,29 @@ from cisco_validation import validate_cisco_config
 OUTPUT_DIR = "configs"
 CSV_DIR = "CSV"
 JINJA_TEMPLATE = "switch.j2"
-PARAMS_FILE = path.join(CSV_DIR, "01. params.csv")
-VLANS_FILE = path.join(CSV_DIR, "02. vlans.csv")
-ETHERCHANNELS_FILE = path.join(CSV_DIR, "03. etherchannels.csv")
-PORT_MAPPING = path.join(CSV_DIR, "04. port_mapping.csv")
+PARAMS_FILE = path.join(CSV_DIR, "01_params.csv")
+VLANS_FILE = path.join(CSV_DIR, "02_vlans.csv")
+ETHERCHANNELS_FILE = path.join(CSV_DIR, "03_etherchannels.csv")
+PORT_MAPPING = path.join(CSV_DIR, "04_port_mapping.csv")
 TODAY = str(date.today())
 
 
 def build_template(
-    template_file, parameters_file, vlans_file, etherchannels_file, port_mapping
+    template_file: str,
+    parameters_file: str,
+    vlans_file: str,
+    etherchannels_file: str,
+    port_mapping: str,
 ):
+    """Generates a Cisco configuration template
+
+    Args:
+        template_file (str): path to switch.j2 file
+        parameters_file (str): path to 01_parameters.csv file
+        vlans_file (str): path 02_vlans.csv file
+        etherchannels_file (str): path to 03_etherchannels.csv file
+        port_mapping (str): path to 04_port-mapping.csv file
+    """
 
     # Handle Jinja template
     env = Environment(
@@ -48,32 +65,32 @@ def build_template(
     template = env.get_template(JINJA_TEMPLATE)
     template.globals["now"] = datetime.now
 
-    # Create configs directory if not already created
+    # Create configs directory if not created already
     if not path.exists(OUTPUT_DIR):
         mkdir(OUTPUT_DIR)
 
     # Read the "parameters" csv sheet and convert it to a dict
-    with open(PARAMS_FILE, "r") as parameters:
+    with open(file=PARAMS_FILE, mode="r") as parameters:
         params = DictReader(parameters)
         for param in params:
             dict_params = dict(param)
 
     # Read the "vlans" csv sheet and convert it to a dict
-    with open(VLANS_FILE, "r") as vlans:
+    with open(file=VLANS_FILE, mode="r") as vlans:
         vlans = DictReader(vlans)
         dict_vlans = {"vlans": []}
         for vlan in vlans:
             dict_vlans["vlans"].append(dict(vlan))
 
     # Read the "etherchannels" csv sheet and convert it to a dict
-    with open(ETHERCHANNELS_FILE, "r") as etherchannels:
+    with open(file=ETHERCHANNELS_FILE, mode="r") as etherchannels:
         portchannels = DictReader(etherchannels)
         dict_portchannels = {"etherchannels": []}
         for portchannel in portchannels:
             dict_portchannels["etherchannels"].append(dict(portchannel))
 
     # Read the "port mapping" csv sheet and convert it to a dict
-    with open(PORT_MAPPING, "r") as interfaces:
+    with open(file=PORT_MAPPING, mode="r") as interfaces:
         ports = DictReader(interfaces)
         dict_ports = {"interfaces": []}
         for port in ports:
@@ -88,34 +105,49 @@ def build_template(
     dicts = dict_params
 
     # Create a json file for validation
-    with open("json_schema.json", "w") as outfile:
-        json.dump(dicts, outfile, indent=2)
-        print("✔ Generated 'json_schema.json' for validation.")
+    with open(file="json_schema.json", mode="w", encoding="utf-8") as outfile:
+        json.dump(obj=dicts, fp=outfile, indent=4)
+        cprint("Generated 'json_schema.json' for validation.", "green")
 
     # Validate Cisco Configuration
     cisco_validation = validate_cisco_config()
     if cisco_validation[0]:
-        print("✔ Perfect! Your configuration is a valid Cisco configuration.")
+        cprint("Perfect! Your configuration is a valid Cisco configuration.", "green")
         # Generate the configuration template file
-        res = template.render(dicts)
+        config = template.render(dicts)
         file_name = f"{dicts['hostname']}_{TODAY}"
-        file_ext = "ios"
+        file_ext = "txt"
         file_location = path.join(OUTPUT_DIR, f"{file_name}.{file_ext}")
-        with open(file_location, "w") as config_file:
-            config_file.write(res)
+        with open(file=file_location, mode="w", encoding="utf-8") as cfg_file:
+            cfg_file.write(config)
 
-        print(
-            f"✔ Configuration file '{file_name}.{file_ext}' is created successfully!\n"
+        cprint(
+            f"Configuration file '{file_name}.{file_ext}' is created successfully!\n",
+            "green",
         )
         # Open configuration file in the default Text Editor for the .ios file extension
-        print(f"Opening '{file_name}.{file_ext}', please wait...")
-        sleep(1)
-        TextEditor.open_new_tab(file_location)
+        decision = (
+            input(
+                "Do you want to open your generated Cisco configuration file now? [y/N]: "
+            )
+            or "N"
+        )
+        if decision in ("N", "n"):
+            cprint(
+                f"INFO: '{file_name}.{file_ext}' is created in configs directory.",
+                "blue",
+            )
+        elif decision in ("Y", "y"):
+            cprint(f"Opening '{file_name}.{file_ext}', please wait...", "cyan")
+            sleep(1)
+            TextEditor.open(file_location, new=0)
+        else:
+            cprint("Invalid input value!", "red")
     else:
-        print("✖ Oops! Something went wrong. Please check the following errors.")
+        cprint("Oops! Something went wrong. Please check the following errors.", "red")
         errors = cisco_validation[1]
         for key, value in errors.items():
-            print(f"✖ Error(s): {key}: {value}")
+            cprint(f"Error(s): {key}: {value}", "red")
 
 
 if __name__ == "__main__":
