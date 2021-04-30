@@ -1,4 +1,4 @@
-!Built on {{ now() }}
+Configuration Built on {{ now().replace(microsecond=0) }}
 
 enable
 !
@@ -9,6 +9,7 @@ clock timezone {{ timezone }}
 hostname {{ hostname }}
 !
 no ip domain lookup
+!
 {% if domain_name|length > 0 %}
 ip domain name {{ domain_name }}
 {% endif %}
@@ -16,20 +17,24 @@ ip domain name {{ domain_name }}
 {% if vtp_domain|length > 0 %}
 vtp domain {{ vtp_domain }}
 {% endif %}
+!
 {% if vtp_version|length > 0 %}
 vtp version {{ vtp_version }}
+!
 {% endif %}
 vtp mode {{ vtp_mode }}
 !
 {% if logging_console|length > 0 %}
 logging console {{ logging_console }}
 {% endif %}
+!
 {% if logging_buffer_size|length > 0 %}
 logging buffered {{ logging_buffer_size }}
 !
 {% endif %}
 username {{ username }} privilege 15 algorithm-type {{ algorithm_type }} secret {{ password }}
 {% if enable_password|length > 0 %}
+!
 enable algorithm-type {{ algorithm_type }} secret {{ enable_password }}
 {% endif %}
 !
@@ -41,20 +46,23 @@ lldp run
 !
 {% if ssh_key_size|length > 0 %}
 crypto key generate rsa general-keys modulus {{ ssh_key_size }}
+!
 {% endif %}
 {% if ssh_key_size >= '2048' and ssh_version == '2' %}
 ip ssh version 2
+!
 {% else %}
 ip ssh version 1.99
 {% endif %}
-!
 {% if http_server == 'no' %}
 no ip http server
+!
 no ip http secure-server
 {% endif %}
 !
 {% if errdisable == 'yes' %}
 errdisable recovery cause all
+!
 errdisable recovery interval {{ errdisable_recovery_interval }}
 {% endif %}
 !
