@@ -16,19 +16,20 @@
 # ---------------------------------------------------------------------------------------
 
 # Libraries
-from os import path, mkdir
 import json
-from csv import DictReader
-from jinja2 import Environment, FileSystemLoader
 import webbrowser as TextEditor
+from csv import DictReader
+from datetime import date, datetime
+from os import mkdir, path
 from time import sleep
-from datetime import datetime, date
+
 from colorama import init
+from jinja2 import Environment, FileSystemLoader
 from termcolor import cprint
 
-init(autoreset=True)
-
 from cisco_validation import validate_cisco_config
+
+init(autoreset=True)
 
 # Global Vars
 OUTPUT_DIR = "configs"
@@ -58,10 +59,16 @@ def build_template(
         port_mapping (str): path to 04_port-mapping.csv file
     """
 
+    # Custom Jinja Filters
+    def raise_helper(msg):
+        raise SystemExit(cprint(msg, "red"))
+
     # Handle Jinja template
     env = Environment(
         loader=FileSystemLoader("./"), trim_blocks=True, lstrip_blocks=True
     )
+    env.globals["raise"] = raise_helper
+
     template = env.get_template(JINJA_TEMPLATE)
     template.globals["now"] = datetime.now
 
@@ -107,12 +114,10 @@ def build_template(
     # Create a json file for validation
     with open(file="json_schema.json", mode="w", encoding="utf-8") as outfile:
         json.dump(obj=dicts, fp=outfile, indent=4)
-        cprint("Generated 'json_schema.json' for validation.", "green")
 
     # Validate Cisco Configuration
     cisco_validation = validate_cisco_config()
     if cisco_validation[0]:
-        cprint("Perfect! Your configuration is a valid Cisco configuration.", "green")
         # Generate the configuration template file
         config = template.render(dicts)
         file_name = f"{dicts['hostname']}_{TODAY}"
@@ -125,11 +130,9 @@ def build_template(
             f"Configuration file '{file_name}.{file_ext}' is created successfully!\n",
             "green",
         )
-        # Open configuration file in the default Text Editor for the .ios file extension
+        # Open configuration file in the default Text Editor for the .txt file extension
         decision = (
-            input(
-                "Do you want to open your generated Cisco configuration file now? [y/N]: "
-            )
+            input(f"Do you want to open {file_name}.{file_ext} file now? [y/N]: ")
             or "N"
         )
         if decision in ("N", "n"):
@@ -142,9 +145,9 @@ def build_template(
             sleep(1)
             TextEditor.open(file_location, new=0)
         else:
-            cprint("Invalid input value!", "red")
+            raise SystemExit(cprint("Invalid input value!", "red"))
     else:
-        cprint("Oops! Something went wrong. Please check the following errors.", "red")
+        cprint("Something went wrong. Please check the following errors.", "red")
         errors = cisco_validation[1]
         for key, value in errors.items():
             cprint(f"Error(s): {key}: {value}", "red")

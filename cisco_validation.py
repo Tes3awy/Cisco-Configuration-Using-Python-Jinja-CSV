@@ -14,9 +14,9 @@
 #
 # ------------------------------------------------------------------------
 
-import os
-import json
 import ipaddress
+import json
+
 from cerberus import Validator
 
 json_schema = {
@@ -247,9 +247,9 @@ json_schema = {
 }
 
 
-def validate_cisco_config():
+def validate_cisco_config() -> list[bool, dict]:
     v = Validator()
     with open("json_schema.json", "r") as f:
         document = json.load(f)
 
-    return (v.validate(document, json_schema), v.errors)
+    return [v.validate(document, json_schema), v.errors]

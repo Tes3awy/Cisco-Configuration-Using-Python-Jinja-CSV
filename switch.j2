@@ -16,8 +16,8 @@ ip domain name {{ domain_name }}
 !
 {% if vtp_domain|length > 0 %}
 vtp domain {{ vtp_domain }}
-{% endif %}
 !
+{% endif %}
 {% if vtp_version|length > 0 %}
 vtp version {{ vtp_version }}
 !
@@ -48,12 +48,12 @@ lldp run
 crypto key generate rsa general-keys modulus {{ ssh_key_size }}
 !
 {% endif %}
-{% if ssh_key_size >= '2048' and ssh_version == '2' %}
+{% if ssh_key_size|int >= 1024 and ssh_version == '2' %}
 ip ssh version 2
-!
 {% else %}
 ip ssh version 1.99
 {% endif %}
+!
 {% if http_server == 'no' %}
 no ip http server
 !
@@ -95,6 +95,7 @@ interface Vlan 1
 exit
 !
 {% for vlan in vlans %}
+{% if vlan.id|int <= 4094 %}
 vlan {{ vlan.id }}
   name {{ vlan.name }}
 exit
@@ -108,6 +109,9 @@ interface Vlan {{ vlan.id }}
   no shutdown
 exit
 !
+{% endif %}
+{% else %}
+{{ raise("VLAN ID cannot be greater than 4094. Got " ~ vlan.id ~ " instead. Please check 02_vlans.csv file.") }}
 {% endif %}
 {% endfor %}
 {% for portchannel in etherchannels %}
@@ -152,7 +156,7 @@ interface {{ port.name }}
   switchport voice vlan {{ port.voice_vlan }}
   {% endif %}
 {% endif %}
-{% if port.mode == 'access' and port.portsecurity != 'no' %}
+{% if port.mode == 'access' and port.portsecurity == 'yes' %}
   switchport port-security
   switchport port-security mac-address sticky
 {% endif %}
