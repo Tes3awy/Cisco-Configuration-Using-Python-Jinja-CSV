@@ -97,7 +97,7 @@ exit
 {% for vlan in vlans %}
 {% if vlan.id|int <= 4094 %}
 vlan {{ vlan.id }}
-  name {{ vlan.name }}
+  name {{ vlan.name|replace(" ", "_")|truncate(32, True, "") }}
 exit
 !
 {% if vlan.ip_addr|length > 0 %}
