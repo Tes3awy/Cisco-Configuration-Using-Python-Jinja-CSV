@@ -128,7 +128,7 @@ json_schema = {
             "type": "dict",
             "schema": {
                 "id": {"type": "string", "required": True, "regex": "[0-9]+"},
-                "name": {"type": "string", "required": True, "regex": "[A-Za-z0-9_-]+"},
+                "name": {"type": "string", "required": True},
                 "ip_addr": {"type": "string", "required": False},
                 "mask": {"type": "string", "required": False},
                 "desc": {"type": "string", "required": False},
