@@ -1,4 +1,4 @@
-Configuration Built on {{ now().replace(microsecond=0) }}
+!Configuration Built on {{ now }}
 
 enable
 !
@@ -67,46 +67,46 @@ errdisable recovery interval {{ errdisable_recovery_interval }}
 {% endif %}
 !
 banner motd $
-                #################** D I S C L A I M E R **##################
-                #                                                          #
-                #     UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED     #
-                #                                                          #
-                #  Restricted to authorized individuals ONLY.              #
-                #                                                          #
-                #  You MUST have explicit, authorized permission to        #
-                #  access or configure this device.                        #
-                #                                                          #
-                #  All activities performed on this device are logged,     #
-                #  monitored, and recorded.                                #
-                #                                                          #
-                #  Unauthorized attempts and actions to access, modify     #
-                #  or use this system may result in civil and/or criminal  #
-                #  penalties.                                              #
-                #                                                          #
-                #  Disconnect IMMEDIATELY if you are not an authorized     #
-                #  user.                                                   #
-                #                                                          #
-                ############################################################
+#################** D I S C L A I M E R **##################
+# #
+# UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED #
+# #
+# Restricted to authorized individuals ONLY. #
+# #
+# You MUST have explicit, authorized permission to #
+# access or configure this device. #
+# #
+# All activities performed on this device are logged, #
+# monitored, and recorded. #
+# #
+# Unauthorized attempts and actions to access, modify #
+# or use this system may result in civil and/or criminal #
+# penalties. #
+# #
+# Disconnect IMMEDIATELY if you are not an authorized #
+# user. #
+# #
+############################################################
 $
 !
 interface Vlan 1
-  no ip address
-  shutdown
+no ip address
+shutdown
 exit
 !
 {% for vlan in vlans %}
 {% if vlan.id|int <= 4094 %}
 vlan {{ vlan.id }}
-  name {{ vlan.name|replace(" ", "_")|truncate(32, True, "") }}
+name {{ vlan.name|replace(" ", "_")|truncate(32, True, "") }}
 exit
 !
 {% if vlan.ip_addr|length > 0 %}
 interface Vlan {{ vlan.id }}
-  ip address {{ vlan.ip_addr }} {{ vlan.mask }}
-  {% if vlan.desc|length > 0 %}
-  description *** {{ vlan.desc }} ***
-  {% endif %}
-  no shutdown
+ip address {{ vlan.ip_addr }} {{ vlan.mask }}
+{% if vlan.desc|length > 0 %}
+description *** {{ vlan.desc }} ***
+{% endif %}
+no shutdown
 exit
 !
 {% endif %}
@@ -116,93 +116,95 @@ exit
 {% endfor %}
 {% for portchannel in etherchannels %}
 interface port-channel {{ portchannel.id }}
-  {% if portchannel.type == 'L2' %}
-  switchport mode {{ portchannel.mode }}
-  {% endif %}
-  {% if portchannel.type == 'L2' and portchannel.mode == 'access' and portchannel.access_vlan|length > 0 %}
-  switchport access vlan {{ portchannel.access_vlan }}
-  {% endif %}
-  {% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and portchannel.native_vlan|length > 0 %}
-  switchport trunk native vlan {{ portchannel.native_vlan }}
-  {% endif %}
-  {% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and (portchannel.allowed_vlans != 'all' and portchannel.allowed_vlans|length > 0) %}
-  switchport trunk allowed vlans {{ portchannel.allowed_vlans }}
-  {% endif %}
-  {% if portchannel.type == 'L3' %}
-  no switchport
-  ip address {{ portchannel.ip_addr }} {{ portchannel.mask }}
-  {% endif %}
-  {% if portchannel.desc|length > 0 %}
-  description *** {{ portchannel.desc }} ***
-  {% endif %}
-  no shutdown
+{% if portchannel.type == 'L2' %}
+switchport mode {{ portchannel.mode }}
+{% endif %}
+{% if portchannel.type == 'L2' and portchannel.mode == 'access' and portchannel.access_vlan|length > 0 %}
+switchport access vlan {{ portchannel.access_vlan }}
+{% endif %}
+{% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and portchannel.native_vlan|length > 0 %}
+switchport trunk native vlan {{ portchannel.native_vlan }}
+{% endif %}
+{% if portchannel.type == 'L2' and portchannel.mode == 'trunk' and (portchannel.allowed_vlans != 'all' and portchannel.allowed_vlans|length > 0) %}
+switchport trunk allowed vlans {{ portchannel.allowed_vlans }}
+{% endif %}
+{% if portchannel.type == 'L3' %}
+no switchport
+ip address {{ portchannel.ip_addr }} {{ portchannel.mask }}
+{% endif %}
+{% if portchannel.desc|length > 0 %}
+description *** {{ portchannel.desc }} ***
+{% endif %}
+no shutdown
 exit
 !
 {% endfor %}
 {% for port in interfaces %}
 interface {{ port.name }}
 {% if port.mode != 'trunk' and port.mode != 'access' %}
-  {{ port.mode }}
-  {% if port.desc|length > 0 %}
-  description *** {{ port.desc }} ***
-  {% endif %}
+{{ port.mode }}
+{% if port.desc|length > 0 %}
+description *** {{ port.desc }} ***
+{% endif %}
 {% endif %}
 {% if port.mode == 'access' %}
-  switchport mode access
-  {% if port.access_vlan|length > 0 %}
-  switchport access vlan {{ port.access_vlan }}
-  {% endif %}
-  {% if port.voice_vlan|length > 0 %}
-  switchport voice vlan {{ port.voice_vlan }}
-  {% endif %}
+switchport mode access
+{% if port.access_vlan|length > 0 %}
+switchport access vlan {{ port.access_vlan }}
+{% endif %}
+{% if port.voice_vlan|length > 0 %}
+switchport voice vlan {{ port.voice_vlan }}
+{% endif %}
 {% endif %}
 {% if port.mode == 'access' and port.portsecurity == 'yes' %}
-  switchport port-security
-  switchport port-security mac-address sticky
+switchport port-security
+switchport port-security mac-address sticky
 {% endif %}
 {% if port.mode == 'trunk' %}
-  switchport mode trunk
+switchport mode trunk
 {% endif %}
 {% if port.mode == 'trunk' and port.native_vlan != '' %}
-  switchport trunk native vlan {{ port.native_vlan }}
+switchport trunk native vlan {{ port.native_vlan }}
 {% endif %}
 {% if (port.mode == 'trunk' and (port.allowed_vlans != 'all' and port.allowed_vlans|length > 0)) %}
-  switchport trunk allowed vlans {{ port.allowed_vlans }}
+switchport trunk allowed vlans {{ port.allowed_vlans }}
 {% endif %}
 {% if port.portfast == 'yes' %}
-  spanning-tree portfast
+spanning-tree portfast
 {% endif %}
 {% if port.bpduguard == 'yes' %}
-  spanning-tree bpduguard enable
+spanning-tree bpduguard enable
 {% endif %}
 {% if port.description|length > 0 %}
-  description *** {{ port.description }} ***
+description *** {{ port.description }} ***
 {% endif %}
 exit
 !
 {% endfor %}
 line console 0
-  logging synchronous
-  login local
-  stopbits 1
+logging synchronous
+login local
+stopbits 1
 exit
 !
 line vty 0 {{ vty_lines }}
-  logging synchronous
-  {% if login_local == 'yes' %}
-  login local
-  {% endif %}
-  exec-timeout {{ timeout }} 0
-  {% if transport_input|length > 0 %}
-  transport input {{ transport_input }}
-  {% else %}
-  transport input all
-  {% endif %}
-  {% if transport_output|length > 0 %}
-  transport output {{ transport_output }}
-  {% else %}
-  transport output all
-  {% endif %}
+logging synchronous
+{% if login_local == 'yes' %}
+login local
+{% endif %}
+exec-timeout {{ timeout }} 0
+{% if transport_input|length > 0 %}
+transport input {{ transport_input }}
+{% else %}
+transport input all
+{% endif %}
+{% if transport_output|length > 0 %}
+transport output {{ transport_output }}
+{% else %}
+transport output all
+{% endif %}
 exit
 !
 end
+!
+! copy running-config startup-config
