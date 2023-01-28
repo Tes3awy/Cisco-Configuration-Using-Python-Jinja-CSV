@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # ------------------------------------------------------------------------
 #
@@ -8,14 +8,14 @@
 # Released under MIT License
 #
 # Filename: cisco_validation.py
-# Version: Python 3.9.4
+# Version: Python 3.11.1
 # Authors: Osama Abbas (oabbas2512@gmail.com)
 # Description:   This program is designed to validate Cisco configuration
 #
 # ------------------------------------------------------------------------
 
-import ipaddress
 import json
+from typing import Union
 
 from cerberus import Validator
 
@@ -247,9 +247,9 @@ json_schema = {
 }
 
 
-def validate_cisco_config() -> list[bool, dict]:
+def validate_config(schema: str) -> dict[str, Union[bool, dict]]:
     v = Validator()
-    with open("json_schema.json", "r") as f:
+    with open(file=schema, mode="rt", encoding="utf-8") as f:
         document = json.load(f)
 
-    return [v.validate(document, json_schema), v.errors]
+    return {"is_validated": v.validate(document, json_schema), "errors": v.errors}
