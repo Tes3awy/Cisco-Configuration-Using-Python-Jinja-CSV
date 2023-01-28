@@ -66,7 +66,7 @@ $ pip install -r requirements.txt
 2. Open terminal/cmd.
 3. Run `python cisco_config_generator.py`.
 
-First, a `json_schema.json` file is created _(if not created already)_ from your configuration in CSV files. Then, `json_schema.json` is validated against a set of rules in `cisco_validation.py`.
+First, a `json_schema.json` file is created _(if not created already)_ from your configuration in CSV files. Then, `json_schema.json` is validated against a set of rules in `validate_config.py`.
 
 Voila :sparkles:! Your configuration will be created an placed in configs directory.
 
